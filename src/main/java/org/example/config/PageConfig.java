@@ -9,5 +9,6 @@ public class PageConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index.html").setViewName("index");
+        registry.addViewController("/allProducts.html").setViewName("allProducts");
     }
 }
