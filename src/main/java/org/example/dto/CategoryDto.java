@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.*;
 import java.util.List;
 
+@ToString
 @Getter @Setter
 @Builder
 @NoArgsConstructor

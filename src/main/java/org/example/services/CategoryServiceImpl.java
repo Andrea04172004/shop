@@ -3,6 +3,7 @@ package org.example.services;
 import org.example.domain.CategoryEntity;
 import org.example.domain.ProductEntity;
 import org.example.dto.CategoryDto;
+import org.example.exeptions.CategoryException;
 import org.example.repositories.CategoryRepository;
 import org.example.repositories.ProductRepository;
 import org.example.utils.BusinessMapper;
@@ -22,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryDto createNewCategory(CategoryDto categoryDto) {
         CategoryEntity categoryEntity = categoryRepository.findByTitle(categoryDto.getTitle());
         if(categoryEntity != null){
-            throw new RuntimeException("Category with such title is already exist");
+            throw new CategoryException("Category with such title is already exist");
         }
         categoryEntity = businessMapper.convertToCategoryEntity(categoryDto);
         categoryRepository.save(categoryEntity);
@@ -33,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDto updateCategory(Integer categoryId, CategoryDto categoryDto) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Product with such id not found"));
+                .orElseThrow(() -> new CategoryException("Product with such id not found"));
 
         if(categoryEntity.getTitle() != null){
             categoryEntity.setTitle(categoryDto.getTitle());

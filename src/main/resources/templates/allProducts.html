@@ -5,29 +5,37 @@
 
 <div layout:fragment="layout_content" id="layout_content">
     <main>
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Link with href
-            </a>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Button with data-target
-            </button>
-        </p>
-        <div class="collapse" id="collapseExample">
-            <div class="card card-body">
-                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <div class="row px-3">
+                        <div class="card  m-2 p-0 shadow-sm" style="width: 14rem;" th:each="product: *{products}">
+
+                            <div>
+                                <img th:src="${product.image}" class="card-img-top img-thumbnail border-0" alt="..."
+                                     style="height: 200px">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-left" th:text="${product.name}"></h5>
+                                <hr class="m-1">
+                                <h6 th:text="${product.categoryDto.title}"></h6>
+                                <h4>
+                                    <span class="font-weight-normal" th:text="${product.price}"></span><span
+                                        class="font-weight-normal"> ₴ </span>
+                                    <button class="btn btn-outline-success float-right">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </button>
+                                </h4>
+                                <span class="float-left" th:text="${product.description}"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" th:each="product: *{products}" th:text="${product.name}"></a>
-            </div>
-        </div>
     </main>
-</div>
 
+</div>
 </html>

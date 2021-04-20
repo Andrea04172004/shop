@@ -1,0 +1,200 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/mainLayout}">
+
+<div layout:fragment="layout_content" id="layout_content">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${exception != null}">
+        <strong th:text="${exception}"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <main>
+
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header text-center  bg-success text-white">
+                            Create new product
+                        </div>
+                        <div class="card-body p-3">
+                            <form method="post" th:action="@{/product/create}" id="productCreateForm"
+                                  class="m-0" th:object="${product}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name"
+                                               th:field="*{name}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="inputPassword4">Description</label>
+                                        <input type="text" class="form-control" id="inputPassword4"
+                                               th:field="*{description}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="image">Image</label>
+                                        <input type="text" class="form-control" id="image"
+                                               th:field="*{image}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="inputCity">Quantity</label>
+                                        <input type="number" min="1" class="form-control" id="inputCity"
+                                               th:field="*{quantity}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="inputPrice">Price</label>
+                                        <input type="number" min="1" class="form-control" id="inputPrice"
+                                               th:field="*{price}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="inputState">Category</label>
+                                        <select id="inputState" class="form-control"
+                                                th:field="*{categoryDto.title}">
+                                            <option th:each="category:${categories}"
+                                                    th:value="${category.title}"><p
+                                                    th:text="${category.title}"></p></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-outline-success" th:disabled="${product.name == null}">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header text-center bg-primary text-white">
+                            Edit product
+                        </div>
+                        <div class="card-body p-3">
+                            <form method="post" th:action="@{/product/create}" id="editProduct" class="m-0"
+                                  th:object="${product}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editName">Name</label>
+                                        <input type="text" class="form-control" id="editName"
+                                               th:field="*{name}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editInputPassword4">Description</label>
+                                        <input type="text" class="form-control" id="editInputPassword4"
+                                               th:field="*{description}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editImage">Image</label>
+                                        <input type="text" class="form-control" id="editImage"
+                                               th:field="*{image}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editInputCity">Quantity</label>
+                                        <input type="number" min="1" class="form-control" id="editInputCity"
+                                               th:field="*{quantity}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editInputPrice">Price</label>
+                                        <input type="number" min="1" class="form-control"
+                                               id="editInputPrice"
+                                               th:field="*{price}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-2">
+                                        <label for="editInputState">Category</label>
+                                        <select id="editInputState" class="form-control"
+                                                th:field="*{categoryDto.title}">
+                                            <option th:each="category:${categories}"
+                                                    th:value="${category.title}"><p
+                                                    th:text="${category.title}"></p></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-outline-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card text-center">
+                        <div class="card-header bg-info text-white">
+                            All products
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="datatable">
+                                <table class="table table-hover table-responsive-xl table-bordered mb-0"
+                                       id="productDashboard">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="product, productStat:${products}">
+                                        <th scope="row" th:text="${productStat.count}"></th>
+                                        <td th:text="${product.name}"></td>
+                                        <td th:text="${product.categoryDto.title}"></td>
+                                        <td th:text="${product.price}"></td>
+                                        <td th:text="${product.quantity}"></td>
+                                        <td>
+                                            <a class="btn btn-outline-danger float-left mr-2"
+                                               th:href="@{/deleteProduct/{productId}(productId=${product.id})}">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
+                                            <a class="btn btn-outline-warning float-left mr-2">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<th:block layout:fragment="scripts">
+    <script th:inline="javascript">
+        function deleteProduct(productId) {
+            let url = "/deleteProduct/" + productId;
+            $.get(url)
+                .done(function (page) {
+                    let table = $("#productDashboard").DataTable();
+                    table.destroy();
+                    loadProductDashboardTable();
+                    $("#layout_content").replaceWith(page);
+                })
+            console.log(productId);
+        }
+
+
+        $('#productDashboard').DataTable({
+            bAutoWidth: false,
+            "columnDefs": [
+                {"width": "10%", "targets": 0},
+                {"width": "25%", "targets": 1},
+                {"width": "25%", "targets": 2},
+                {"width": "20%", "targets": 3},
+                {"width": "10%", "targets": 4},
+                {"width": "15%", "targets": 5},
+            ]
+        });
+
+    </script>
+</th:block>
+</html>

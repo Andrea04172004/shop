@@ -40,6 +40,7 @@ public class BusinessMapper {
 
     public ProductDto convertToProductDto (ProductEntity productEntity){
         return ProductDto.builder()
+                .id(productEntity.getId())
                 .name(productEntity.getName())
                 .description(productEntity.getDescription())
                 .image(productEntity.getImage())
@@ -49,13 +50,15 @@ public class BusinessMapper {
     }
 
     public ProductEntity convertToProductEntity (ProductDto productDto){
+        CategoryEntity categoryEntity = categoryRepository.findByTitle(productDto.getCategoryDto().getTitle());
+
         return ProductEntity.builder()
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .image(productDto.getImage())
                 .price(productDto.getPrice())
                 .quantity(productDto.getQuantity())
-                .categoryEntity(convertToCategoryEntity(productDto.getCategoryDto())).build();
+                .categoryEntity(categoryEntity).build();
     }
 
     public CategoryEntity convertToCategoryEntity (CategoryDto categoryDto){

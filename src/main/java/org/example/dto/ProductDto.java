@@ -4,6 +4,7 @@ import lombok.*;
 import org.example.domain.CategoryEntity;
 
 
+@ToString
 @Getter
 @Setter
 @Builder
@@ -16,5 +17,5 @@ public class ProductDto {
     private Integer quantity;
     private Double price;
     private String description;
-    private CategoryDto categoryDto;
+    private CategoryDto categoryDto = new CategoryDto();
 }

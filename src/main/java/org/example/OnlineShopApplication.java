@@ -6,12 +6,15 @@ import org.example.repositories.CategoryRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 
-@SpringBootApplication
+
+@SpringBootApplication (exclude = {ErrorMvcAutoConfiguration.class})
 public class OnlineShopApplication {
     public static void main(String[] args) {
         SpringApplication.run(OnlineShopApplication.class, args);
@@ -26,23 +29,23 @@ public class OnlineShopApplication {
             categoryRepository.save(categoryEntity);
 
             ProductEntity productEntity = ProductEntity.builder()
-                    .image("test.jpg")
+                    .image("https://ilounge.ua/files/products/iphone-13-8.1000x.jpg")
                     .description("Best product")
                     .name("Apple")
-                    .price(78.56)
+                    .price(Double.parseDouble(String.valueOf(Math.round(65.56))))
                     .quantity(23)
                     .categoryEntity(categoryEntity).build();
             productRepository.save(productEntity);
-//            for (int i = 1; i < 11; i++) {
-//                ProductEntity productEntity = ProductEntity.builder()
-//                        .image("test"+i+".jpg")
-//                        .description("Best product")
-//                        .name("Apple-"+i)
-//                        .price(i+.56)
-//                        .quantity(23)
-//                        .categoryEntity(new CategoryEntity()).build();
-//                productRepository.save(productEntity);
-//            }
+            for (int i = 1; i < 11; i++) {
+                ProductEntity productEntity1 = ProductEntity.builder()
+                        .image("https://ilounge.ua/files/products/iphone-13-8.1000x.jpg")
+                        .description("Best product")
+                        .name("Apple-"+i)
+                        .price(Double.parseDouble(String.valueOf(Math.round(i+.56))))
+                        .quantity(23)
+                        .categoryEntity(categoryEntity).build();
+                productRepository.save(productEntity1);
+            }
         };
     }
 }
