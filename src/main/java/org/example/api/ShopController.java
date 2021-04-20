@@ -10,9 +10,4 @@ public class ShopController {
     public ModelAndView mainPage (){
         return new ModelAndView("index");
     }
-
-    @GetMapping ("/allProducts")
-    public ModelAndView allProductsPage (){
-        return new ModelAndView("allProducts");
-    }
 }
