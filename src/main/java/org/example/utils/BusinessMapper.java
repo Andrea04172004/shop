@@ -1,9 +1,13 @@
 package org.example.utils;
 
 import org.example.domain.CategoryEntity;
+import org.example.domain.LineItemEntity;
 import org.example.domain.ProductEntity;
+import org.example.domain.ShoppingCartEntity;
 import org.example.dto.CategoryDto;
+import org.example.dto.LineItemDto;
 import org.example.dto.ProductDto;
+import org.example.dto.ShoppingCartDto;
 import org.example.repositories.CategoryRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,10 @@ public class BusinessMapper {
     public Function<ProductDto, ProductEntity> toProductEntity = this::convertToProductEntity;
     public Function<CategoryEntity, CategoryDto> toCategoryDto = this::convertToCategoryDto;
     public Function<CategoryDto, CategoryEntity> toCategoryEntity = this::convertToCategoryEntity;
+    public Function<LineItemEntity, LineItemDto> toLineItemDto = this::convertToLineItemDto;
+    public Function<LineItemDto, LineItemEntity> toLineItemEntity = this::convertToLineItemEntity;
+    public Function<ShoppingCartEntity, ShoppingCartDto> toCartDto = this::convertToCartDto;
+    public Function<ShoppingCartDto, ShoppingCartEntity> toCartEntity = this::convertToCartEntity;
 
 
 
@@ -71,5 +79,29 @@ public class BusinessMapper {
         return CategoryDto.builder()
                 .title(categoryEntity.getTitle()).build();
 //                .productDto(convertCollectionToListGen(categoryEntity.getProductEntities(), toProductDto)).build();
+    }
+
+    public LineItemDto convertToLineItemDto (LineItemEntity lineItemEntity){
+        return LineItemDto.builder()
+                .id(lineItemEntity.getId())
+                .quantity(lineItemEntity.getQuantity())
+                .lineSum((double) Math.round(lineItemEntity.getQuantity() * lineItemEntity.getProduct().getPrice()))
+                .product(convertToProductDto(lineItemEntity.getProduct())).build();
+    }
+
+    public LineItemEntity convertToLineItemEntity (LineItemDto lineItemDto){
+        return LineItemEntity.builder()
+                .quantity(lineItemDto.getQuantity())
+                .product(convertToProductEntity(lineItemDto.getProduct())).build();
+    }
+
+    public ShoppingCartDto convertToCartDto (ShoppingCartEntity shoppingCartEntity){
+        return ShoppingCartDto.builder()
+                .id(shoppingCartEntity.getId())
+                .lineItemDto(convertCollectionToListGen(shoppingCartEntity.getLineItemEntities(), toLineItemDto)).build();
+    }
+    public ShoppingCartEntity convertToCartEntity (ShoppingCartDto shoppingCartDto){
+        return ShoppingCartEntity.builder()
+                .lineItemEntities(convertCollectionToListGen(shoppingCartDto.getLineItemDto(), toLineItemEntity)).build();
     }
 }

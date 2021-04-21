@@ -1,9 +1,13 @@
 package org.example;
 
 import org.example.domain.CategoryEntity;
+import org.example.domain.LineItemEntity;
 import org.example.domain.ProductEntity;
+import org.example.domain.ShoppingCartEntity;
 import org.example.repositories.CategoryRepository;
+import org.example.repositories.LineItemRepository;
 import org.example.repositories.ProductRepository;
+import org.example.repositories.ShoppingCartRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,6 +16,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -22,7 +27,8 @@ public class OnlineShopApplication {
     }
 
     @Bean
-    CommandLineRunner init(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    CommandLineRunner init(ProductRepository productRepository, CategoryRepository categoryRepository,
+                           ShoppingCartRepository shoppingCartRepository, LineItemRepository lineItemRepository) {
         return args -> {
             CategoryEntity categoryEntity = CategoryEntity.builder()
                     .title("Goods")
@@ -64,6 +70,18 @@ public class OnlineShopApplication {
                 products.add(productEntity1);
             }
 
+            List<LineItemEntity> lineItemEntities = new LinkedList<>();
+            for (int i = 1; i < 5; i++) {
+                LineItemEntity lineItemEntity = LineItemEntity.builder()
+                        .product(productEntity)
+                        .quantity(i+3).build();
+                lineItemRepository.save(lineItemEntity);
+                lineItemEntities.add(lineItemEntity);
+            }
+            ShoppingCartEntity shoppingCartEntity = ShoppingCartEntity.builder()
+                    .id(1)
+                    .lineItemEntities(lineItemEntities).build();
+            shoppingCartRepository.save(shoppingCartEntity);
             categoryEntity.setProductEntities(products);
             categoryRepository.save(categoryEntity);
         };
