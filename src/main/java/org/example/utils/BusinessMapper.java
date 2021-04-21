@@ -63,13 +63,13 @@ public class BusinessMapper {
 
     public CategoryEntity convertToCategoryEntity (CategoryDto categoryDto){
         return CategoryEntity.builder()
-                .title(categoryDto.getTitle())
-                .productEntities(convertCollectionToListGen(categoryDto.getProductDto(), toProductEntity)).build();
+                .title(categoryDto.getTitle()).build();
+//                .productEntities(convertCollectionToListGen(categoryDto.getProductDto(), toProductEntity))
     }
 
     public CategoryDto convertToCategoryDto (CategoryEntity categoryEntity){
         return CategoryDto.builder()
-                .title(categoryEntity.getTitle())
-                .productDto(convertCollectionToListGen(categoryEntity.getProductEntities(), toProductDto)).build();
+                .title(categoryEntity.getTitle()).build();
+//                .productDto(convertCollectionToListGen(categoryEntity.getProductEntities(), toProductDto)).build();
     }
 }

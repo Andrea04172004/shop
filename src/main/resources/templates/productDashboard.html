@@ -4,8 +4,8 @@
       layout:decorate="~{/mainLayout}">
 
 <div layout:fragment="layout_content" id="layout_content">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${exception != null}">
-        <strong th:text="${exception}"></strong>
+    <div class="alert alert-dismissible fade show" th:classappend="${status}" role="alert" th:if="${message != null}">
+        <strong th:text="${message}"></strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -51,20 +51,54 @@
                                                th:field="*{price}">
                                     </div>
                                     <div class="form-group col-md-4 mb-2">
-                                        <label for="inputState">Category</label>
-                                        <select id="inputState" class="form-control"
-                                                th:field="*{categoryDto.title}">
-                                            <option th:each="category:${categories}"
-                                                    th:value="${category.title}"><p
-                                                    th:text="${category.title}"></p></option>
-                                        </select>
+                                        <label for="inputCity">Category</label>
+                                        <div class="input-group mb-3">
+                                            <select id="inputState" class="form-control"
+                                                    th:field="*{categoryDto.title}">
+                                                <option th:each="category:${categories}"
+                                                        th:value="${category.title}"><p
+                                                        th:text="${category.title}"></p></option>
+                                            </select>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text btn btn-outline-success"
+                                                      data-toggle="collapse" href="#addCat" role="button"
+                                                      aria-expanded="false" aria-controls="collapseExample"
+                                                      id="basic-addon1">
+                                                    <i class="fas fa-plus"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-block btn-outline-success" th:disabled="${product.name == null}">Create</button>
+                                <button type="submit" class="btn btn-block btn-outline-success">Create</button>
                             </form>
                         </div>
                     </div>
+
+                        <div class="card collapse" id="addCat">
+                            <div class="card-header text-center  bg-success text-white">
+                                Create new category
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="form-group col-md-12 mb-2 p-0">
+                                    <form method="post" th:action="@{/category/create}" id="createCategoryForm"
+                                          class="m-0" th:object="${category}">
+                                        <label for="newCat">Category</label>
+                                        <div class="input-group mb-3">
+                                            <input class="form-control" type="text" id="newCat"
+                                                   th:field="*{title}">
+                                            <div class="input-group-prepend">
+                                                <button class="btn-outline-success input-group-text"
+                                                        type="submit"
+                                                        id="createCat">Create
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                 </div>
+
 
                 <div class="col-lg-6">
                     <div class="card">
@@ -72,22 +106,28 @@
                             Edit product
                         </div>
                         <div class="card-body p-3">
-                            <form method="post" th:action="@{/product/create}" id="editProduct" class="m-0"
+                            <form method="post"
+                                  th:action="@{/product/updateProduct/{productId}(productId=${product.id})}"
+                                  id="editProduct" class="m-0"
+
                                   th:object="${product}">
                                 <div class="form-row">
                                     <div class="form-group col-md-4 mb-2">
                                         <label for="editName">Name</label>
                                         <input type="text" class="form-control" id="editName"
+                                               th:value="${product.name}"
                                                th:field="*{name}">
                                     </div>
                                     <div class="form-group col-md-4 mb-2">
                                         <label for="editInputPassword4">Description</label>
                                         <input type="text" class="form-control" id="editInputPassword4"
+                                               th:value="${product.description}"
                                                th:field="*{description}">
                                     </div>
                                     <div class="form-group col-md-4 mb-2">
                                         <label for="editImage">Image</label>
                                         <input type="text" class="form-control" id="editImage"
+                                               th:value="${product.image}"
                                                th:field="*{image}">
                                     </div>
                                 </div>
@@ -95,12 +135,14 @@
                                     <div class="form-group col-md-4 mb-2">
                                         <label for="editInputCity">Quantity</label>
                                         <input type="number" min="1" class="form-control" id="editInputCity"
+                                               th:value="${product.quantity}"
                                                th:field="*{quantity}">
                                     </div>
                                     <div class="form-group col-md-4 mb-2">
                                         <label for="editInputPrice">Price</label>
                                         <input type="number" min="1" class="form-control"
                                                id="editInputPrice"
+                                               th:value="${product.price}"
                                                th:field="*{price}">
                                     </div>
                                     <div class="form-group col-md-4 mb-2">
@@ -149,12 +191,13 @@
                                         <td th:text="${product.price}"></td>
                                         <td th:text="${product.quantity}"></td>
                                         <td>
+                                            <a class="btn btn-outline-warning float-left mr-2"
+                                               th:href="@{/selectProduct/{productId}(productId=${product.id})}">
+                                                <i class="far fa-edit"></i>
+                                            </a>
                                             <a class="btn btn-outline-danger float-left mr-2"
                                                th:href="@{/deleteProduct/{productId}(productId=${product.id})}">
                                                 <i class="far fa-trash-alt"></i>
-                                            </a>
-                                            <a class="btn btn-outline-warning float-left mr-2">
-                                                <i class="far fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>

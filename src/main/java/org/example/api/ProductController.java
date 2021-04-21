@@ -1,5 +1,7 @@
 package org.example.api;
 
+import org.example.domain.ProductEntity;
+import org.example.dto.CategoryDto;
 import org.example.dto.ProductDto;
 import org.example.exeptions.ProductException;
 import org.example.services.CategoryService;
@@ -39,6 +41,7 @@ public class ProductController {
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("category", new CategoryDto());
         return modelAndView;
     }
 
@@ -49,6 +52,7 @@ public class ProductController {
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("category", new CategoryDto());
         return modelAndView;
     }
 
@@ -61,6 +65,7 @@ public class ProductController {
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("category", new CategoryDto());
         return modelAndView;
     }
 
@@ -70,8 +75,33 @@ public class ProductController {
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
-        modelAndView.addObject("exception", ex.getMessage());
+        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.addObject("status", "alert-danger");
+        modelAndView.addObject("category", new CategoryDto());
         return modelAndView;
     }
 
+    @GetMapping("/selectProduct/{productId}")
+    public ModelAndView selectProductForUpdate(@PathVariable("productId") String productId) {
+        ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("product", productService.findProductById(Integer.parseInt(productId)));
+        modelAndView.addObject("products", productService.findAllProducts());
+        modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("category", new CategoryDto());
+        return modelAndView;
+    }
+
+    @PostMapping("/product/updateProduct/{productId}")
+    public ModelAndView selectProductForUpdate(@ModelAttribute ("product") ProductDto productDto, @PathVariable("productId") String productId) {
+        System.out.println(productDto.toString());
+        ProductDto product = productService.updateProduct(Integer.parseInt(productId), productDto);
+        ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("product", new ProductDto());
+        modelAndView.addObject("products", productService.findAllProducts());
+        modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("message", "Product with id "+product.getId() +" successfully updated");
+        modelAndView.addObject("status", "alert-success");
+        modelAndView.addObject("category", new CategoryDto());
+        return modelAndView;
+    }
 }

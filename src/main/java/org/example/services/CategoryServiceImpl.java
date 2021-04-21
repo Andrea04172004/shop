@@ -39,9 +39,9 @@ public class CategoryServiceImpl implements CategoryService{
         if(categoryEntity.getTitle() != null){
             categoryEntity.setTitle(categoryDto.getTitle());
         }
-        if(categoryEntity.getProductEntities() != null){
-            categoryEntity.setProductEntities(businessMapper.convertCollectionToListGen(categoryDto.getProductDto(), businessMapper.toProductEntity));
-        }
+//        if(categoryEntity.getProductEntities() != null){
+//            categoryEntity.setProductEntities(businessMapper.convertCollectionToListGen(categoryDto.getProductDto(), businessMapper.toProductEntity));
+//        }
         categoryRepository.save(categoryEntity);
         return businessMapper.convertToCategoryDto(categoryEntity);
     }

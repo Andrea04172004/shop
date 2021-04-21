@@ -3,6 +3,7 @@ package org.example.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,5 +20,5 @@ public class CategoryEntity {
     @Column (unique = true)
     private String title;
     @OneToMany
-    private List<ProductEntity> productEntities;
+    private List<ProductEntity> productEntities = new ArrayList<>();
 }

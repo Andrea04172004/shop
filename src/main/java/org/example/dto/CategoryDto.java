@@ -1,6 +1,8 @@
 package org.example.dto;
 
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -10,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
     private String title;
-    private List<ProductDto> productDto;
+//    private List<ProductDto> productDto = new ArrayList<>();
 }

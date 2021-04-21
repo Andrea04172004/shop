@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootApplication (exclude = {ErrorMvcAutoConfiguration.class})
@@ -27,6 +28,19 @@ public class OnlineShopApplication {
                     .title("Goods")
                     .productEntities(new ArrayList<>()).build();
             categoryRepository.save(categoryEntity);
+            CategoryEntity categoryEntity1 = CategoryEntity.builder()
+                    .title("Goods1")
+                    .productEntities(new ArrayList<>()).build();
+            categoryRepository.save(categoryEntity1);
+            CategoryEntity categoryEntity2 = CategoryEntity.builder()
+                    .title("Goods2")
+                    .productEntities(new ArrayList<>()).build();
+            categoryRepository.save(categoryEntity2);
+            CategoryEntity categoryEntity3 = CategoryEntity.builder()
+                    .title("Goods3")
+                    .productEntities(new ArrayList<>()).build();
+            categoryRepository.save(categoryEntity3);
+
 
             ProductEntity productEntity = ProductEntity.builder()
                     .image("https://ilounge.ua/files/products/iphone-13-8.1000x.jpg")
@@ -36,6 +50,8 @@ public class OnlineShopApplication {
                     .quantity(23)
                     .categoryEntity(categoryEntity).build();
             productRepository.save(productEntity);
+
+            List<ProductEntity> products = new ArrayList<>();
             for (int i = 1; i < 11; i++) {
                 ProductEntity productEntity1 = ProductEntity.builder()
                         .image("https://ilounge.ua/files/products/iphone-13-8.1000x.jpg")
@@ -45,7 +61,12 @@ public class OnlineShopApplication {
                         .quantity(23)
                         .categoryEntity(categoryEntity).build();
                 productRepository.save(productEntity1);
+                products.add(productEntity1);
             }
+
+            categoryEntity.setProductEntities(products);
+            categoryRepository.save(categoryEntity);
         };
     }
 }
+

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException("Product with such id not found"));
 
+
         if (productDto.getName() != null) {
             productEntity.setName(productDto.getName());
         }
@@ -60,10 +62,20 @@ public class ProductServiceImpl implements ProductService {
         if (productDto.getQuantity() != null) {
             productEntity.setQuantity(productDto.getQuantity());
         }
-        if (productDto.getCategoryDto() != null) {
-            productEntity.setCategoryEntity(businessMapper.convertToCategoryEntity(productDto.getCategoryDto()));
-        }
+        if(productDto.getCategoryDto()!= null){
+            CategoryEntity oldCategory = categoryRepository.findByTitle(productEntity.getCategoryEntity().getTitle());
+            CategoryEntity newCategory = categoryRepository.findByTitle(productDto.getCategoryDto().getTitle());
+            productEntity.setCategoryEntity(newCategory);
 
+            List<ProductEntity> categoryProducts = oldCategory.getProductEntities();
+            categoryProducts.remove(productEntity);
+            oldCategory.setProductEntities(categoryProducts);
+
+            categoryProducts = newCategory.getProductEntities();
+            categoryProducts.add(productEntity);
+            newCategory.setProductEntities(categoryProducts);
+            categoryRepository.save(newCategory);
+        }
         productRepository.save(productEntity);
         return businessMapper.convertToProductDto(productEntity);
     }
