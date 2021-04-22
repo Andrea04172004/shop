@@ -16,4 +16,5 @@ import java.util.List;
 public class ShoppingCartDto {
     private Integer id;
     private List<LineItemDto> lineItemDto = new ArrayList<>();
+    private Double totalCartPrice;
 }

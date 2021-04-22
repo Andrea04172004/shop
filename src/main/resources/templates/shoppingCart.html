@@ -17,15 +17,19 @@
                                 <div th:if="${cart.lineItemDto.size() == 0}">
                                     <div id="emptyCartBlock">
                                         <div class="row justify-content-center mb-2">
-                                            <img style="width: 100px;" src="https://www.pngkit.com/png/detail/882-8824559_empty-cart-png-onthel-to-work.png" id="emptyCartImg">
+                                            <img style="width: 100px;"
+                                                 src="https://i.pinimg.com/originals/15/bb/55/15bb559cdd28f56d7c17b00498b4a946.png"
+                                                 id="emptyCartImg">
                                         </div>
                                         <div class="row justify-content-center">
-                                            <h4 class="text-center mb-1">Your cart currently empty</h4>
+                                            <h4 class="text-center mb-2">Your cart currently empty</h4>
                                         </div>
                                         <div class="row justify-content-center">
-                                            <button class="btn btn-success " href="/allProducts"
-                                                    id="goShoppingBtn">Go shopping
-                                            </button>
+                                            <a href="/allProducts">
+                                                <button class="btn btn-success "
+                                                        id="goShoppingBtn">Go shopping
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -34,10 +38,18 @@
                                     <!--                         Image-->
 
                                     <div class="col-md-2">
-                                        <div class="rounded mb-3 mb-md-0">
+                                        <div class="mb-3 mb-md-0 d-flex align-items-end justify-content-end">
                                             <img class="img-fluid w-100"
                                                  style="width: 12px; cursor: pointer; outline: none"
                                                  id="prodImg" th:src="${line.product.image}">
+
+                                            <a th:href="@{/deleteLineItem/{shopCartId}/{lineId}(shopCartId=${cart.id}, lineId=${line.id})}"
+                                               style="position: absolute; z-index: 1">
+                                                <button id="delItem"
+                                                        class="btn btn-danger card-link-secondary small text-uppercase mr-3">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
 
@@ -47,38 +59,51 @@
                                                 <h5 id="prodName" th:text="${line.product.name}"></h5>
                                                 <h4 class="mb-1 text-muted text-uppercase small"
                                                     th:text="${line.product.categoryDto.title}"></h4>
+                                                <div class="form form-inline">
+                                                    <h6 class="mr-3 mb-2">Price:</h6>
+                                                    <h5 id="priceForOne" th:text="${line.product.price}+'₴'"></h5>
+                                                </div>
                                             </div>
                                             <div>
-
                                                 <div class="input-group mb-3" id="quantityChange">
                                                     <div class="input-group-prepend">
-                                                        <button id="plus"
-                                                                class="btn btn-outline-success rounded-0">
-                                                            <i class="fas fa-plus"></i></button>
+                                                        <a th:href="@{/changeLineAmount/{shopCartId}/{lineId}/plus(shopCartId=${cart.id}, lineId=${line.id})}">
+                                                            <button id="plus"
+                                                                    class="btn btn-outline-success rounded-0">
+                                                                <i class="fas fa-plus"></i></button>
+                                                        </a>
                                                     </div>
-                                                    <input class="form-control form-control-sm font-weight-normal text-center rounded-0 border-1 disabled" style="width: 50px"
+                                                    <input class="form-control form-control-sm font-weight-normal text-center rounded-0 border-1 disabled"
+                                                           style="width: 50px"
                                                            readonly
                                                            min="0" max="100" id="lineItem" type="text"
                                                            th:value="${line.quantity}"/>
                                                     <div class="input-group-prepend">
-                                                        <button id="minus"
-                                                                class="btn btn-outline-danger rounded-0"><i
-                                                                class="fas fa-minus"></i></button>
+                                                        <a th:href="@{/changeLineAmount/{shopCartId}/{lineId}/minus(shopCartId=${cart.id}, lineId=${line.id})}">
+
+                                                            <button id="minus"
+                                                                    class="btn btn-outline-danger rounded-0"><i
+                                                                    class="fas fa-minus"></i></button>
+                                                        </a>
                                                     </div>
+                                                </div>
+
+                                                <div class="form form-inline">
+                                                    <h6 class="mr-3">Total:</h6>
+                                                    <h5 id="total" th:text="${line.lineSum}+'₴'"></h5>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="deleteButtons">
-                                                <button id="delItem"
-                                                        th:href="@{/deleteLineItem/{shopCartId}/{lineId}(shopCartId=${cart.id}, lineId=${line.id})}"
-                                                        class="btn btn-outline-danger card-link-secondary small text-uppercase mr-3">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </div>
-
-                                            <h5 id="total" th:text="${line.lineSum}"></h5>
-                                        </div>
+<!--                                        <div class="d-flex justify-content-between align-items-center">-->
+<!--                                            <div class="deleteButtons">-->
+<!--                                                <a th:href="@{/deleteLineItem/{shopCartId}/{lineId}(shopCartId=${cart.id}, lineId=${line.id})}">-->
+<!--                                                    <button id="delItem"-->
+<!--                                                            class="btn btn-outline-danger card-link-secondary small text-uppercase mr-3">-->
+<!--                                                        <i class="fas fa-trash-alt"></i>-->
+<!--                                                    </button>-->
+<!--                                                </a>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
 
@@ -103,7 +128,7 @@
 
                                 <div class="pb-4">
                                     <h5 class="card-text float-left">Total amount</h5>
-                                    <h6 class="card-text float-right"></h6>
+                                    <h4 class="card-text float-right" th:text="${totalCartPrice}+'₴'"></h4>
                                 </div>
 
                                 <button id="checkout" type="submit"

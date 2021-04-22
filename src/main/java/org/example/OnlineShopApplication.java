@@ -71,13 +71,13 @@ public class OnlineShopApplication {
             }
 
             List<LineItemEntity> lineItemEntities = new LinkedList<>();
-            for (int i = 1; i < 5; i++) {
+//            for (int i = 1; i < 5; i++) {
                 LineItemEntity lineItemEntity = LineItemEntity.builder()
                         .product(productEntity)
-                        .quantity(i+3).build();
+                        .quantity(2).build();
                 lineItemRepository.save(lineItemEntity);
                 lineItemEntities.add(lineItemEntity);
-            }
+//            }
             ShoppingCartEntity shoppingCartEntity = ShoppingCartEntity.builder()
                     .id(1)
                     .lineItemEntities(lineItemEntities).build();

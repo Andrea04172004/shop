@@ -19,6 +19,7 @@ public class ShoppingCartController {
     public ModelAndView getShopCart (){
         ModelAndView modelAndView = new ModelAndView("shoppingCart");
         modelAndView.addObject("cart", shoppingCartService.findById(1));
+        modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(1));
         return modelAndView;
     }
 
@@ -26,6 +27,19 @@ public class ShoppingCartController {
     public ModelAndView deleteLineItem (@PathVariable ("shopCartId") String shopCartId, @PathVariable ("lineId") String lineId){
         ModelAndView modelAndView = new ModelAndView("shoppingCart");
         modelAndView.addObject("cart", shoppingCartService.deleteLineItemFromCart(Integer.parseInt(lineId),Integer.parseInt(shopCartId)));
+        modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(Integer.parseInt(shopCartId)));
+
+        return modelAndView;
+    }
+
+    @GetMapping ("/changeLineAmount/{shopCartId}/{lineId}/{type}")
+    public ModelAndView changeLineAmount (@PathVariable ("shopCartId") String shopCartId,
+                                          @PathVariable ("lineId") String lineId,
+                                          @PathVariable ("type") String type){
+        ModelAndView modelAndView = new ModelAndView("shoppingCart");
+        modelAndView.addObject("cart", shoppingCartService.updateLineQuantity(Integer.parseInt(shopCartId), Integer.parseInt(lineId), type));
+        modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(Integer.parseInt(shopCartId)));
+
         return modelAndView;
     }
 }

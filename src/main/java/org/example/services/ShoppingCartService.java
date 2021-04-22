@@ -14,4 +14,7 @@ public interface ShoppingCartService {
     public void deleteShopCart(Integer shopCartId);
     public List<ShoppingCartDto> findAllShopCarts();
     public ShoppingCartDto deleteLineItemFromCart (Integer lineId, Integer shopCartId);
+    public ShoppingCartDto addProductToShopCart (Integer productId, Integer shopCartId);
+    public ShoppingCartDto updateLineQuantity (Integer shopCartId,Integer lineId, String type);
+    public String getTotalCartPrice (Integer shopCartId);
 }

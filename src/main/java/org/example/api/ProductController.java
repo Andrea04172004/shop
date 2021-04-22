@@ -6,6 +6,7 @@ import org.example.dto.ProductDto;
 import org.example.exeptions.ProductException;
 import org.example.services.CategoryService;
 import org.example.services.ProductService;
+import org.example.services.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,17 +28,30 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @GetMapping("/allProducts")
     public ModelAndView allProductsPage() {
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
+        modelAndView.addObject("cart", shoppingCartService.findById(1));
         return modelAndView;
     }
+    @GetMapping("/product/addToCart/{shopCartId}/{productId}")
+    public ModelAndView addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
+        shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
+        ModelAndView modelAndView = new ModelAndView("allProducts");
+        modelAndView.addObject("products", productService.findAllProducts());
+        modelAndView.addObject("cart", shoppingCartService.findById(1));
+        return modelAndView;
+    }
+
 
     @GetMapping("/dashboard")
     public ModelAndView getProductDashboard() {
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
@@ -49,6 +63,7 @@ public class ProductController {
     public ModelAndView deleteProduct(@PathVariable("productId") String productId) {
         productService.deleteProduct(Integer.parseInt(productId));
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
@@ -58,10 +73,11 @@ public class ProductController {
 
 
     @PostMapping("/product/create")
-    public ModelAndView createNewProduct(@ModelAttribute("product") ProductDto productDto) {
+    public ModelAndView createNewProduct(@ModelAttribute("productCreate") ProductDto productDto) {
         System.out.println(productDto);
         productService.createNewProduct(productDto);
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
@@ -72,6 +88,7 @@ public class ProductController {
     @ExceptionHandler({ProductException.class})
     public ModelAndView productExceptionsHandler(ProductException ex) {
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
@@ -84,6 +101,7 @@ public class ProductController {
     @GetMapping("/selectProduct/{productId}")
     public ModelAndView selectProductForUpdate(@PathVariable("productId") String productId) {
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", productService.findProductById(Integer.parseInt(productId)));
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());
@@ -96,6 +114,7 @@ public class ProductController {
         System.out.println(productDto.toString());
         ProductDto product = productService.updateProduct(Integer.parseInt(productId), productDto);
         ModelAndView modelAndView = new ModelAndView("productDashboard");
+        modelAndView.addObject("productCreate", new ProductDto());
         modelAndView.addObject("product", new ProductDto());
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("categories", categoryService.findAllCategories());

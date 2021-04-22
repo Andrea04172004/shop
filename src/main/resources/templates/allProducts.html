@@ -22,9 +22,11 @@
                                 <h4>
                                     <span class="font-weight-normal" th:text="${product.price}"></span><span
                                         class="font-weight-normal"> ₴ </span>
-                                    <button class="btn btn-outline-success float-right">
-                                        <i class="fa fa-shopping-cart"></i>
-                                    </button>
+                                    <a th:href="@{/product/addToCart/{shopCartId}/{productId}(shopCartId=${cart.id}, productId=${product.id})}">
+                                        <button class="btn btn-outline-success float-right">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+                                    </a>
                                 </h4>
                                 <span class="float-left" th:text="${product.description}"></span>
                             </div>
