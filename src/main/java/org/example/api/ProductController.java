@@ -1,8 +1,10 @@
 package org.example.api;
 
 import org.example.domain.ProductEntity;
+import org.example.domain.ShoppingCartEntity;
 import org.example.dto.CategoryDto;
 import org.example.dto.ProductDto;
+import org.example.dto.ShoppingCartDto;
 import org.example.exeptions.ProductException;
 import org.example.services.CategoryService;
 import org.example.services.ProductService;
@@ -31,19 +33,25 @@ public class ProductController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
+
     @GetMapping("/allProducts")
     public ModelAndView allProductsPage() {
+        ShoppingCartDto shoppingCartDto =  shoppingCartService.findById(1);
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("cart", shoppingCartService.findById(1));
+        modelAndView.addObject("cart", shoppingCartDto);
+        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
+        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
         return modelAndView;
     }
     @GetMapping("/product/addToCart/{shopCartId}/{productId}")
     public ModelAndView addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
-        shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
+       ShoppingCartDto shoppingCartDto = shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("cart", shoppingCartService.findById(1));
+        modelAndView.addObject("cart", shoppingCartDto);
+        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
+        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
         return modelAndView;
     }
 
