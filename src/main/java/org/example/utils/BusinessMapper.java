@@ -4,10 +4,14 @@ import org.example.domain.CategoryEntity;
 import org.example.domain.LineItemEntity;
 import org.example.domain.ProductEntity;
 import org.example.domain.ShoppingCartEntity;
+import org.example.domain.user.RoleEntity;
+import org.example.domain.user.UserEntity;
 import org.example.dto.CategoryDto;
 import org.example.dto.LineItemDto;
 import org.example.dto.ProductDto;
 import org.example.dto.ShoppingCartDto;
+import org.example.dto.user.RoleDto;
+import org.example.dto.user.UserDto;
 import org.example.repositories.CategoryRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,11 @@ public class BusinessMapper {
     public Function<LineItemDto, LineItemEntity> toLineItemEntity = this::convertToLineItemEntity;
     public Function<ShoppingCartEntity, ShoppingCartDto> toCartDto = this::convertToCartDto;
     public Function<ShoppingCartDto, ShoppingCartEntity> toCartEntity = this::convertToCartEntity;
+
+    public Function<UserEntity, UserDto> toUserDto = this::convertToUserDto;
+    public Function<UserDto, UserEntity> toUserEntity = this::convertToUserEntity;
+    public Function<RoleEntity, RoleDto> toRoleDto = this::convertToRoleDto;
+    public Function<RoleDto, RoleEntity> toRoleEntity = this::convertToRoleEntity;
 
 
 
@@ -103,5 +112,35 @@ public class BusinessMapper {
     public ShoppingCartEntity convertToCartEntity (ShoppingCartDto shoppingCartDto){
         return ShoppingCartEntity.builder()
                 .lineItemEntities(convertCollectionToListGen(shoppingCartDto.getLineItemDto(), toLineItemEntity)).build();
+    }
+
+    public RoleEntity convertToRoleEntity (RoleDto roleDto){
+        return RoleEntity.builder()
+                .role(roleDto.getRole()).build();
+    }
+    public RoleDto convertToRoleDto (RoleEntity roleEntity){
+        return RoleDto.builder()
+                .role(roleEntity.getRole()).build();
+    }
+
+    public UserEntity convertToUserEntity (UserDto userDto){
+        return UserEntity.builder()
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
+                .mobileNumber(userDto.getMobileNumber())
+                .password(userDto.getPassword())
+                .roles(convertCollectionToSetGen(userDto.getRoles(),toRoleEntity))
+                .shoppingCartEntity(convertToCartEntity(userDto.getShoppingCartDto())).build();
+    }
+    public UserDto convertToUserDto (UserEntity userEntity){
+        return UserDto.builder()
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .email(userEntity.getEmail())
+                .mobileNumber(userEntity.getMobileNumber())
+                .password(userEntity.getPassword())
+                .roles(convertCollectionToSetGen(userEntity.getRoles(),toRoleDto))
+                .shoppingCartDto(convertToCartDto(userEntity.getShoppingCartEntity())).build();
     }
 }

@@ -19,10 +19,10 @@
                 </li>
             </ul>
             <div class="form-inline my-2 my-lg-0 text-white">
-                <div class="form-inline" th:if="${cartPrice!=null}">
-                    <p class="m-0 mx-2">Cart price:</p>
-                    <h6 class="m-0" th:text="${cartPrice}+'₴'"></h6>
-                </div>
+<!--                <div class="form-inline" th:if="${cartPrice!=null}">-->
+<!--                    <p class="m-0 mx-2">Cart price:</p>-->
+<!--                    <h6 class="m-0" th:text="${cartPrice}+'₴'"></h6>-->
+<!--                </div>-->
                 <a class="nav-link p-0" href="/shopCart">
                     <button class="btn text-white p-1">
                         <span class="badge badge-pill badge-primary m-4" th:if="${cartAmount!=0}" th:text="${cartAmount}"
@@ -30,8 +30,12 @@
                         <i class="mx-2 fas fa-shopping-cart fa-lg"></i>
                     </button>
                 </a>
-                <!--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-                <!--                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+
+                <a class="nav-link p-0" href="/shopCart">
+                    <button class="btn text-white p-1">
+                        <i class="mx-3 fas fa-user fa-lg"></i>
+                    </button>
+                </a>
             </div>
         </div>
     </nav>
