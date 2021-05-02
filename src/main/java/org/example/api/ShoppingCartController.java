@@ -1,9 +1,13 @@
 package org.example.api;
 
 import org.example.dto.ShoppingCartDto;
+import org.example.dto.user.UserDto;
 import org.example.services.LineItemService;
 import org.example.services.ShoppingCartService;
+import org.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +19,15 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private LineItemService lineItemService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping ("/shopCart")
     public ModelAndView getShopCart (){
-        ShoppingCartDto shoppingCartDto = shoppingCartService.findById(1);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(auth.getName());
+
+        ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
         ModelAndView modelAndView = new ModelAndView("shoppingCart");
         modelAndView.addObject("cart", shoppingCartDto);
         modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));

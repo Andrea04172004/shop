@@ -100,6 +100,7 @@ public class MultiHttpSecurityConfig {
                     .antMatchers("/signup").permitAll()
                     .antMatchers("/dashboard/**").hasAuthority("ADMIN")
                     .antMatchers("/allProducts/**").authenticated()
+                    .antMatchers("/profile").authenticated()
                     .anyRequest()
                     .authenticated()
                     .and()

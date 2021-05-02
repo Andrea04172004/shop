@@ -5,13 +5,17 @@ import org.example.domain.ShoppingCartEntity;
 import org.example.dto.CategoryDto;
 import org.example.dto.ProductDto;
 import org.example.dto.ShoppingCartDto;
+import org.example.dto.user.UserDto;
 import org.example.exeptions.ProductException;
 import org.example.services.CategoryService;
 import org.example.services.ProductService;
 import org.example.services.ShoppingCartService;
+import org.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +36,15 @@ public class ProductController {
     private CategoryService categoryService;
     @Autowired
     private ShoppingCartService shoppingCartService;
-
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/allProducts")
     public ModelAndView allProductsPage() {
-        ShoppingCartDto shoppingCartDto =  shoppingCartService.findById(1);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(auth.getName());
+
+        ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("cart", shoppingCartDto);
@@ -46,7 +54,7 @@ public class ProductController {
     }
     @GetMapping("/product/addToCart/{shopCartId}/{productId}")
     public ModelAndView addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
-       ShoppingCartDto shoppingCartDto = shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
+        ShoppingCartDto shoppingCartDto = shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
         modelAndView.addObject("cart", shoppingCartDto);
