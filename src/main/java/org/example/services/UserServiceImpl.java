@@ -4,8 +4,12 @@ import org.example.domain.ShoppingCartEntity;
 import org.example.domain.user.RoleEntity;
 import org.example.domain.user.UserEntity;
 import org.example.domain.user.UserRoles;
+import org.example.dto.ShoppingCartDto;
+import org.example.dto.user.RoleDto;
 import org.example.dto.user.UserDto;
+import org.example.dto.user.UserRequestDto;
 import org.example.exeptions.UserException;
+import org.example.repositories.ShoppingCartRepository;
 import org.example.repositories.user.RoleRepository;
 import org.example.repositories.user.UserRepository;
 import org.example.utils.BusinessMapper;
@@ -15,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -32,20 +33,33 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private BusinessMapper businessMapper;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
 
 
     @Override
     public UserDto signup(UserDto userDto) {
         UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());
+
         if (userEntity != null) {
             throw new RuntimeException("User with such email is already exist");
         }
+
         userEntity = businessMapper.convertToUserEntity(userDto);
+        ShoppingCartEntity shoppingCartEntity = ShoppingCartEntity.builder()
+                .lineItemEntities(new ArrayList<>()).build();
+        shoppingCartRepository.save(shoppingCartEntity);
+        userEntity.setShoppingCartEntity(shoppingCartEntity);
+
         Set<RoleEntity> roleEntities = new HashSet<>();
-        roleEntities.add(roleRepository.findByRole("USER"));
+        roleEntities.add(roleRepository.findByRole(UserRoles.USER.name()));
         userEntity.setRoles(roleEntities);
 
-        return businessMapper.convertToUserDto(userRepository.save(userEntity));
+        userRepository.save(userEntity);
+
+        return businessMapper.convertToUserDto(userEntity);
     }
 
 

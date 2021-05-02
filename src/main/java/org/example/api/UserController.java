@@ -8,10 +8,7 @@ import org.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -29,8 +26,14 @@ public class UserController {
     @GetMapping("/signUp")
     public ModelAndView getSignUp() {
         ModelAndView modelAndView = new ModelAndView("signup");
-        modelAndView.addObject("user", new UserSignupRequest());
+        modelAndView.addObject("user", new UserDto());
         return modelAndView;
+    }
+
+    @PostMapping("/signup")
+    public String signup(@ModelAttribute("user") @Valid UserDto userDto) {
+        userService.signup(userDto);
+        return "redirect:login";
     }
 
     @GetMapping("/getUserByEmail/{email}")

@@ -17,6 +17,6 @@ public class ShoppingCartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToMany (cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+    @OneToMany (cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private List<LineItemEntity> lineItemEntities = new ArrayList<>();
 }

@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import org.example.domain.ShoppingCartEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -27,10 +28,10 @@ public class UserEntity {
     private String firstName;
 
     private String lastName;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String mobileNumber;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles;
 
     @OneToOne (fetch = FetchType.EAGER)

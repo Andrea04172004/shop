@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.example.dto.ShoppingCartDto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Accessors(chain = true)
@@ -22,6 +23,6 @@ public class UserDto {
     private String lastName;
     private String mobileNumber;
     private boolean isAdmin;
-    private Set<RoleDto> roles;
-    private ShoppingCartDto shoppingCartDto;
+    private Set<RoleDto> roles = new HashSet<>();
+    private ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
 }
