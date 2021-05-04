@@ -2,6 +2,7 @@ package org.example.api;
 
 import org.dom4j.rule.Mode;
 import org.example.domain.user.UserEntity;
+import org.example.dto.form.PasswordChangeForm;
 import org.example.dto.user.UserDto;
 
 import org.example.dto.user.UserSignupRequest;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +23,8 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
@@ -51,6 +56,22 @@ public class UserController {
         UserDto userDto = userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView("profile");
         modelAndView.addObject("user", userDto);
+        modelAndView.addObject("passwordForm", new PasswordChangeForm());
         return modelAndView;
+    }
+
+    @PostMapping ("/password")
+    public ModelAndView changePassword (@ModelAttribute ("passwordForm") PasswordChangeForm passwordChangeForm, BindingResult bindingResult){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(authentication.getName());
+        if(bindingResult.hasErrors()&& !bCryptPasswordEncoder.matches(passwordChangeForm.getOldPassword(), userDto.getPassword())){
+            ModelAndView modelAndView = new ModelAndView("profile");
+            modelAndView.addObject("user", userDto);
+            modelAndView.addObject("passwordForm", new PasswordChangeForm());
+            return modelAndView;
+        }else{
+            userService.changePassword(userDto, passwordChangeForm.getPassword());
+            return new ModelAndView("login");
+        }
     }
 }
