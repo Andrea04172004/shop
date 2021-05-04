@@ -101,13 +101,6 @@ public class OnlineShopApplication {
 
 
 
-            RoleEntity adminRole = roleRepository.findByRole("ADMIN");
-            if (adminRole == null) {
-                adminRole = new RoleEntity();
-                adminRole.setRole("ADMIN");
-                roleRepository.save(adminRole);
-            }
-
             RoleEntity userRole = roleRepository.findByRole("USER");
             if (userRole == null) {
                 userRole = new RoleEntity();
@@ -118,9 +111,9 @@ public class OnlineShopApplication {
 
             Set<RoleEntity> roleEntities = new HashSet<>();
             roleEntities.add(userRole);
-            UserEntity admin = userRepository.findByEmail("admin.agencya@gmail.com");
-            if (admin == null) {
-                admin = UserEntity.builder()
+            UserEntity user = userRepository.findByEmail("admin.agencya@gmail.com");
+            if (user == null) {
+                user = UserEntity.builder()
                         .email("admin.agencya@gmail.com")
                         .password("$2a$10$7PtcjEnWb/ZkgyXyxY1/Iei2dGgGQUbqIIll/dt.qJ8l8nQBWMbYO") // "123456"
                         .firstName("John")
@@ -128,6 +121,36 @@ public class OnlineShopApplication {
                         .mobileNumber("9425094250")
                         .shoppingCartEntity(shoppingCartEntity)
                         .roles(roleEntities).build();
+                userRepository.save(user);
+            }
+
+
+
+            RoleEntity adminRole = roleRepository.findByRole("ADMIN");
+            if (adminRole == null) {
+                adminRole = new RoleEntity();
+                adminRole.setRole("ADMIN");
+                roleRepository.save(adminRole);
+            }
+
+            ShoppingCartEntity shoppingCartEntity1 = ShoppingCartEntity.builder()
+                    .id(2)
+                    .lineItemEntities(new LinkedList<>()).build();
+            shoppingCartRepository.save(shoppingCartEntity1);
+
+
+            Set<RoleEntity> roleEntities1 = new HashSet<>();
+            roleEntities1.add(adminRole);
+            UserEntity admin = userRepository.findByEmail("andrew@mail.com");
+            if (admin == null) {
+                admin = UserEntity.builder()
+                        .email("andrew@mail.com")
+                        .password("$2a$10$7PtcjEnWb/ZkgyXyxY1/Iei2dGgGQUbqIIll/dt.qJ8l8nQBWMbYO") // "123456"
+                        .firstName("Andrew")
+                        .lastName("Dev")
+                        .mobileNumber("1111111111111")
+                        .shoppingCartEntity(shoppingCartEntity1)
+                        .roles(roleEntities1).build();
                 userRepository.save(admin);
             }
         };

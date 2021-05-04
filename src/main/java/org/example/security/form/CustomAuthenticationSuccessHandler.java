@@ -19,11 +19,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_OK);
         for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if (auth.getAuthority().equals("ADMIN")) {
-                response.sendRedirect("/dashboard");
-            }
             if(auth.getAuthority().equals("USER")){
                 response.sendRedirect("/allProducts");
+            }else{
+                response.sendRedirect("/dashboard");
             }
         }
     }

@@ -101,6 +101,8 @@ public class MultiHttpSecurityConfig {
                     .antMatchers("/dashboard/**").hasAuthority("ADMIN")
                     .antMatchers("/allProducts/**").authenticated()
                     .antMatchers("/profile").authenticated()
+                    .antMatchers("/password").authenticated()
+                    .antMatchers("/updateProfile").authenticated()
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -119,7 +121,7 @@ public class MultiHttpSecurityConfig {
                     .deleteCookies("JSESSIONID")
                     .logoutSuccessUrl("/login")
                     .and()
-                    .exceptionHandling();
+                    .exceptionHandling().accessDeniedPage("/403");
         }
 
         @Override

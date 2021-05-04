@@ -48,33 +48,38 @@
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                              data-parent="#accordionExample">
                             <div class="card-body">
-                                <form class="m-0">
+                                <form class="m-0" method="GET" th:action="@{/updateProfile}" th:object="${user}">
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <label for="first">First Name</label>
                                             <input type="text" class="form-control" id="first"
+                                                   th:field="*{firstName}"
                                                    th:value="${user.firstName}">
                                         </div>
                                         <div class="col-lg-6">
                                             <label for="last">Last Name</label>
                                             <input type="text" class="form-control" id="last"
+                                                   th:field="*{lastName}"
                                                    th:value="${user.lastName}">
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <label for="mail">Email</label>
-                                            <input type="text" class="form-control" id="mail" th:value="${user.email}">
+                                            <input type="text" class="form-control" id="mail" readonly
+                                                   th:field="*{email}"
+                                                   th:value="${user.email}">
                                         </div>
                                         <div class="col-lg-6">
                                             <label for="phone">Phone number</label>
                                             <input type="text" class="form-control" id="phone"
+                                                   th:field="*{mobileNumber}"
                                                    th:value="${user.mobileNumber}">
                                         </div>
                                     </div>
                                     <div class="form-row mt-2 d-flex justify-content-end">
                                         <div class="col-lg-6 d-flex justify-content-end">
-                                            <button class="btn btn-success">Submit</button>
+                                            <button class="btn btn-success" type="submit">Submit</button>
                                         </div>
                                     </div>
                                 </form>

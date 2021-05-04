@@ -50,8 +50,8 @@ public class UserController {
     }
 
 
-    @GetMapping ("/profile")
-    public ModelAndView getProfilePage (){
+    @GetMapping("/profile")
+    public ModelAndView getProfilePage() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView("profile");
@@ -60,18 +60,26 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping ("/password")
-    public ModelAndView changePassword (@ModelAttribute ("passwordForm") PasswordChangeForm passwordChangeForm, BindingResult bindingResult){
+    @GetMapping("/updateProfile")
+    public String updateProfile(@ModelAttribute("user") UserDto updateUser) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(authentication.getName());
+        userService.updateProfile(userDto.getEmail(), updateUser);
+        return "redirect:profile";
+    }
+
+    @PostMapping("/password")
+    public ModelAndView changePassword(@ModelAttribute("passwordForm") PasswordChangeForm passwordChangeForm, BindingResult bindingResult) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = userService.findUserByEmail(authentication.getName());
 
-        if(!bCryptPasswordEncoder.matches(passwordChangeForm.getOldPassword(), userDto.getPassword())){
+        if (!bCryptPasswordEncoder.matches(passwordChangeForm.getOldPassword(), userDto.getPassword())) {
             ModelAndView modelAndView = new ModelAndView("profile");
             modelAndView.addObject("user", userDto);
             modelAndView.addObject("message", "Your old password was entered incorrectly. please enter it again");
             modelAndView.addObject("passwordForm", new PasswordChangeForm());
             return modelAndView;
-        }else{
+        } else {
             userService.changePassword(userDto, passwordChangeForm.getPassword());
             return new ModelAndView("login");
         }
