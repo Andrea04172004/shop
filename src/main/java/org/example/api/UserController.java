@@ -64,9 +64,11 @@ public class UserController {
     public ModelAndView changePassword (@ModelAttribute ("passwordForm") PasswordChangeForm passwordChangeForm, BindingResult bindingResult){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = userService.findUserByEmail(authentication.getName());
-        if(bindingResult.hasErrors()&& !bCryptPasswordEncoder.matches(passwordChangeForm.getOldPassword(), userDto.getPassword())){
+
+        if(!bCryptPasswordEncoder.matches(passwordChangeForm.getOldPassword(), userDto.getPassword())){
             ModelAndView modelAndView = new ModelAndView("profile");
             modelAndView.addObject("user", userDto);
+            modelAndView.addObject("message", "Your old password was entered incorrectly. please enter it again");
             modelAndView.addObject("passwordForm", new PasswordChangeForm());
             return modelAndView;
         }else{

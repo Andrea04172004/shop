@@ -4,6 +4,12 @@
       layout:decorate="~{/mainLayout}">
 
 <div layout:fragment="layout_content" id="layout_content">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${message!=null}">
+        <strong th:text="${message}"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container mt-5">
         <div class="row gutters">
             <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
@@ -92,11 +98,11 @@
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <label for="first">Old password</label>
-                                            <input type="text" class="form-control" id="old" th:field="${passwordForm.oldPassword}">
+                                            <input type="password" class="form-control" id="old" th:field="${passwordForm.oldPassword}">
                                         </div>
                                         <div class="col-lg-6">
                                             <label for="last">New password</label>
-                                            <input type="text" class="form-control" id="new" th:field="${passwordForm.password}">
+                                            <input type="password" class="form-control" id="new" th:field="${passwordForm.password}">
                                         </div>
                                     </div>
                                     <div class="form-row mt-2 d-flex justify-content-end">

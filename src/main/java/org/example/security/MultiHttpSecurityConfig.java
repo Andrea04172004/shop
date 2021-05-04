@@ -117,7 +117,7 @@ public class MultiHttpSecurityConfig {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessHandler(new CustomLogoutSuccessHandler())
                     .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("/")
+                    .logoutSuccessUrl("/login")
                     .and()
                     .exceptionHandling();
         }

@@ -25,6 +25,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 
+import static org.example.security.SecurityConstants.EXPIRATION_TIME;
+
 
 @SpringBootApplication
 public class OnlineShopApplication {
