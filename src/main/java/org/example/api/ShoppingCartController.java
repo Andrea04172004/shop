@@ -37,27 +37,23 @@ public class ShoppingCartController {
     }
 
     @GetMapping ("/deleteLineItem/{shopCartId}/{lineId}")
-    public ModelAndView deleteLineItem (@PathVariable ("shopCartId") String shopCartId, @PathVariable ("lineId") String lineId){
-        ModelAndView modelAndView = new ModelAndView("shoppingCart");
-        modelAndView.addObject("cart", shoppingCartService.deleteLineItemFromCart(Integer.parseInt(lineId),Integer.parseInt(shopCartId)));
-        ShoppingCartDto shoppingCartDto = shoppingCartService.findById(Integer.parseInt(shopCartId));
-        modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(Integer.parseInt(shopCartId)));
-        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
-        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
+    public String deleteLineItem (@PathVariable ("shopCartId") String shopCartId, @PathVariable ("lineId") String lineId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(auth.getName());
+        ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
 
-        return modelAndView;
+        shoppingCartService.deleteLineItemFromCart(Integer.parseInt(lineId),Integer.parseInt(shopCartId));
+        return "redirect:/shopCart";
     }
 
-    @GetMapping ("/changeLineAmount/{shopCartId}/{lineId}/{type}")
-    public ModelAndView changeLineAmount (@PathVariable ("shopCartId") String shopCartId,
-                                          @PathVariable ("lineId") String lineId,
+    @GetMapping ("/changeLineAmount/{lineId}/{type}")
+    public String changeLineAmount (@PathVariable ("lineId") String lineId,
                                           @PathVariable ("type") String type){
-        ShoppingCartDto shoppingCartDto = shoppingCartService.findById(Integer.parseInt(shopCartId));
-        ModelAndView modelAndView = new ModelAndView("shoppingCart");
-        modelAndView.addObject("cart", shoppingCartService.updateLineQuantity(Integer.parseInt(shopCartId), Integer.parseInt(lineId), type));
-        modelAndView.addObject("totalCartPrice", shoppingCartService.getTotalCartPrice(Integer.parseInt(shopCartId)));
-        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
-        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
-        return modelAndView;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(auth.getName());
+        ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
+
+        shoppingCartService.updateLineQuantity(shoppingCartDto.getId(), Integer.parseInt(lineId), type);
+        return "redirect:/shopCart";
     }
 }

@@ -53,14 +53,9 @@ public class ProductController {
         return modelAndView;
     }
     @GetMapping("/product/addToCart/{shopCartId}/{productId}")
-    public ModelAndView addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
+    public String addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
         ShoppingCartDto shoppingCartDto = shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
-        ModelAndView modelAndView = new ModelAndView("allProducts");
-        modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("cart", shoppingCartDto);
-        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
-        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
-        return modelAndView;
+        return "redirect:/allProducts";
     }
 
 

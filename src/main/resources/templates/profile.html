@@ -25,9 +25,9 @@
                                 <h6 class="user-email my-2" th:text="${user.email}"></h6>
                             </div>
                             <div class="about">
-                                <h5>About</h5>
-                                <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human
-                                    experiences.</p>
+                                <a  class="btn btn-outline-primary btn-block mt-3" href="/logout">
+                                    <div>Logout</div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -99,15 +99,18 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                              data-parent="#accordionExample">
                             <div class="card-body">
-                                <form class="m-0"  action="#" method="POST" th:action="@{/password}" th:object="${passwordForm}">
+                                <form class="m-0" action="#" method="POST" th:action="@{/password}"
+                                      th:object="${passwordForm}">
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <label for="first">Old password</label>
-                                            <input type="password" class="form-control" id="old" th:field="${passwordForm.oldPassword}">
+                                            <input type="password" class="form-control" id="old"
+                                                   th:field="${passwordForm.oldPassword}">
                                         </div>
                                         <div class="col-lg-6">
                                             <label for="last">New password</label>
-                                            <input type="password" class="form-control" id="new" th:field="${passwordForm.password}">
+                                            <input type="password" class="form-control" id="new"
+                                                   th:field="${passwordForm.password}">
                                         </div>
                                     </div>
                                     <div class="form-row mt-2 d-flex justify-content-end">
