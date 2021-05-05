@@ -52,8 +52,9 @@ public class ProductController {
         modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
         return modelAndView;
     }
+
     @GetMapping("/product/addToCart/{shopCartId}/{productId}")
-    public String addProductToShopCart(@PathVariable ("productId") String productId, @PathVariable  String shopCartId) {
+    public String addProductToShopCart(@PathVariable("productId") String productId, @PathVariable String shopCartId) {
         ShoppingCartDto shoppingCartDto = shoppingCartService.addProductToShopCart(Integer.parseInt(productId), Integer.parseInt(shopCartId));
         return "redirect:/allProducts";
     }
@@ -71,29 +72,16 @@ public class ProductController {
     }
 
     @GetMapping("/deleteProduct/{productId}")
-    public ModelAndView deleteProduct(@PathVariable("productId") String productId) {
+    public String deleteProduct(@PathVariable("productId") String productId) {
         productService.deleteProduct(Integer.parseInt(productId));
-        ModelAndView modelAndView = new ModelAndView("productDashboard");
-        modelAndView.addObject("productCreate", new ProductDto());
-        modelAndView.addObject("product", new ProductDto());
-        modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("categories", categoryService.findAllCategories());
-        modelAndView.addObject("category", new CategoryDto());
-        return modelAndView;
+        return "redirect:/dashboard";
     }
 
 
     @PostMapping("/product/create")
-    public ModelAndView createNewProduct(@ModelAttribute("productCreate") ProductDto productDto) {
-        System.out.println(productDto);
+    public String createNewProduct(@ModelAttribute("productCreate") ProductDto productDto) {
         productService.createNewProduct(productDto);
-        ModelAndView modelAndView = new ModelAndView("productDashboard");
-        modelAndView.addObject("productCreate", new ProductDto());
-        modelAndView.addObject("product", new ProductDto());
-        modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("categories", categoryService.findAllCategories());
-        modelAndView.addObject("category", new CategoryDto());
-        return modelAndView;
+        return "redirect:/dashboard";
     }
 
     @ExceptionHandler({ProductException.class})
@@ -121,17 +109,8 @@ public class ProductController {
     }
 
     @PostMapping("/product/updateProduct/{productId}")
-    public ModelAndView selectProductForUpdate(@ModelAttribute ("product") ProductDto productDto, @PathVariable("productId") String productId) {
-        System.out.println(productDto.toString());
-        ProductDto product = productService.updateProduct(Integer.parseInt(productId), productDto);
-        ModelAndView modelAndView = new ModelAndView("productDashboard");
-        modelAndView.addObject("productCreate", new ProductDto());
-        modelAndView.addObject("product", new ProductDto());
-        modelAndView.addObject("products", productService.findAllProducts());
-        modelAndView.addObject("categories", categoryService.findAllCategories());
-        modelAndView.addObject("message", "Product with id "+product.getId() +" successfully updated");
-        modelAndView.addObject("status", "alert-success");
-        modelAndView.addObject("category", new CategoryDto());
-        return modelAndView;
+    public String selectProductForUpdate(@ModelAttribute("product") ProductDto productDto, @PathVariable("productId") String productId) {
+        productService.updateProduct(Integer.parseInt(productId), productDto);
+        return "redirect:/dashboard";
     }
 }

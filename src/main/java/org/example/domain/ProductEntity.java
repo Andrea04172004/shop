@@ -26,5 +26,4 @@ public class ProductEntity {
     private String description;
     @OneToOne
     private CategoryEntity categoryEntity;
-
 }
