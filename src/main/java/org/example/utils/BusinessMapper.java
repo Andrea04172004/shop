@@ -83,12 +83,16 @@ public class BusinessMapper {
 
     public CategoryEntity convertToCategoryEntity(CategoryDto categoryDto) {
         return CategoryEntity.builder()
+                .image(categoryDto.getImage())
+                .description(categoryDto.getDescription())
                 .title(categoryDto.getTitle()).build();
 //                .productEntities(convertCollectionToListGen(categoryDto.getProductDto(), toProductEntity))
     }
 
     public CategoryDto convertToCategoryDto(CategoryEntity categoryEntity) {
         return CategoryDto.builder()
+                .image(categoryEntity.getImage())
+                .description(categoryEntity.getDescription())
                 .title(categoryEntity.getTitle()).build();
 //                .productDto(convertCollectionToListGen(categoryEntity.getProductEntities(), toProductDto)).build();
     }

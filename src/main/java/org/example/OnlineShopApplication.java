@@ -46,18 +46,26 @@ public class OnlineShopApplication {
         return args -> {
             CategoryEntity categoryEntity = CategoryEntity.builder()
                     .title("Goods")
+                    .description("Best category")
+                    .image("https://video.rozetka.com.ua/img_superportal/santehnika_i_remont/3_1.jpg")
                     .productEntities(new ArrayList<>()).build();
             categoryRepository.save(categoryEntity);
             CategoryEntity categoryEntity1 = CategoryEntity.builder()
                     .title("Goods1")
+                    .description("Best category")
+                    .image("https://video.rozetka.com.ua/img_superportal/sport-i-uvlechenija/11.jpg")
                     .productEntities(new ArrayList<>()).build();
             categoryRepository.save(categoryEntity1);
             CategoryEntity categoryEntity2 = CategoryEntity.builder()
                     .title("Goods2")
+                    .description("Best category")
+                    .image("https://video.rozetka.com.ua/img_superportal/sport-i-uvlechenija/7.jpg")
                     .productEntities(new ArrayList<>()).build();
             categoryRepository.save(categoryEntity2);
             CategoryEntity categoryEntity3 = CategoryEntity.builder()
                     .title("Goods3")
+                    .description("Best category")
+                    .image("https://video.rozetka.com.ua/img_superportal/sport-i-uvlechenija/2.jpg")
                     .productEntities(new ArrayList<>()).build();
             categoryRepository.save(categoryEntity3);
 

@@ -19,6 +19,10 @@ public class CategoryEntity {
     private Integer id;
     @Column (unique = true)
     private String title;
+    @Column
+    private String image;
+    @Column
+    private String description;
     @OneToMany
     private List<ProductEntity> productEntities = new ArrayList<>();
 }

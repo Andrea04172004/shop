@@ -39,6 +39,7 @@ public class ProductController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/allProducts")
     public ModelAndView allProductsPage() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,6 +51,23 @@ public class ProductController {
         modelAndView.addObject("cart", shoppingCartDto);
         modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
         modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
+        modelAndView.addObject("categories", categoryService.findAllCategories());
+        return modelAndView;
+    }
+
+    @GetMapping("/allProducts/{category}")
+    public ModelAndView filterAllProductsByCategory(@PathVariable("category") String categoryTitle) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = userService.findUserByEmail(auth.getName());
+
+        System.out.println(categoryTitle);
+        ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
+        ModelAndView modelAndView = new ModelAndView("allProducts");
+        modelAndView.addObject("products", productService.findAllProducts().stream().filter(productDto -> productDto.getCategoryDto().getTitle().equals(categoryTitle)).collect(Collectors.toList()));
+        modelAndView.addObject("cart", shoppingCartDto);
+        modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
+        modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
+        modelAndView.addObject("categories", categoryService.findAllCategories());
         return modelAndView;
     }
 
@@ -72,9 +90,15 @@ public class ProductController {
     }
 
     @GetMapping("/deleteProduct/{productId}")
-    public String deleteProduct(@PathVariable("productId") String productId) {
+    public ModelAndView deleteProduct(@PathVariable("productId") String productId) {
         productService.deleteProduct(Integer.parseInt(productId));
-        return "redirect:/dashboard";
+        ModelAndView modelAndView = new ModelAndView("productTable");
+        modelAndView.addObject("productCreate", new ProductDto());
+        modelAndView.addObject("product", new ProductDto());
+        modelAndView.addObject("products", productService.findAllProducts());
+        modelAndView.addObject("categories", categoryService.findAllCategories());
+        modelAndView.addObject("category", new CategoryDto());
+        return modelAndView;
     }
 
 
@@ -113,4 +137,6 @@ public class ProductController {
         productService.updateProduct(Integer.parseInt(productId), productDto);
         return "redirect:/dashboard";
     }
+
+
 }

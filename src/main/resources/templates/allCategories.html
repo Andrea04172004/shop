@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/mainLayout}">
+
+<div layout:fragment="layout_content" id="layout_content">
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid contenedor text-center">
+                        <div class="container text-center">
+                            <div class="card-deck">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 container_foto" th:each="category: ${categories}"
+                                     th:href="@{/allProducts/{category}(category=${category.title})}">
+                                    <div class="ver_mas text-center d-flex align-items-center text-white justify-content-center">
+                                        <h3 class="m-0 text-center"><i class="fas fa-eye text-light fa-lg"></i></h3>
+                                    </div>
+                                    <article class="text-left d-flex align-items-end">
+                                        <h2 th:text="${category.title}"></h2>
+                                        <br>
+                                    </article>
+                                    <img th:src="${category.image}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+</div>
+</html>

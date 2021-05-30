@@ -8,6 +8,7 @@ import org.example.dto.ShoppingCartDto;
 import org.example.dto.user.RoleDto;
 import org.example.dto.user.UserDto;
 import org.example.dto.user.UserRequestDto;
+import org.example.exeptions.ResultEnum;
 import org.example.exeptions.UserException;
 import org.example.repositories.ShoppingCartRepository;
 import org.example.repositories.user.RoleRepository;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());
 
         if (userEntity != null) {
-            throw new RuntimeException("User with such email is already exist");
+            throw new UserException(ResultEnum.USER_IS_ALREADY_EXIST.name());
         }
 
         userEntity = businessMapper.convertToUserEntity(userDto);
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
                     .setMobileNumber(userDto.getMobileNumber());
             return businessMapper.convertToUserDto(userRepository.save(user));
         }
-        throw new RuntimeException("User with such email is not found exist");
+        throw new UserException(ResultEnum.USER_NOT_FOUND.name());
     }
 
 
@@ -88,6 +89,6 @@ public class UserServiceImpl implements UserService {
             user.setPassword(bCryptPasswordEncoder.encode(newPassword));
             return businessMapper.convertToUserDto(userRepository.save(user));
         }
-        throw new RuntimeException("User with such email is not found exist");
+        throw new UserException(ResultEnum.USER_NOT_FOUND.name());
     }
 }

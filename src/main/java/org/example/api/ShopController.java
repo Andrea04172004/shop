@@ -22,10 +22,10 @@ public class ShopController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ModelAndView mainPage() {
-        return new ModelAndView("index");
-    }
+//    @GetMapping
+//    public ModelAndView mainPage() {
+//        return new ModelAndView("mainLayout");
+//    }
 
 //    @GetMapping("/header")
 //    public ModelAndView header() {

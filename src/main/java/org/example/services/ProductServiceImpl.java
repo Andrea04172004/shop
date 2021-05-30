@@ -4,6 +4,8 @@ import org.example.domain.CategoryEntity;
 import org.example.domain.ProductEntity;
 import org.example.dto.ProductDto;
 import org.example.exeptions.ProductException;
+import org.example.exeptions.ResultEnum;
+import org.example.exeptions.UserException;
 import org.example.repositories.CategoryRepository;
 import org.example.repositories.ProductRepository;
 import org.example.utils.BusinessMapper;
@@ -32,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto createNewProduct(ProductDto productDto) {
         ProductEntity productEntity = productRepository.findByName(productDto.getName());
         if (productEntity != null) {
-            throw new ProductException("Product with such name is already exist");
+            throw new ProductException(ResultEnum.PRODUCT_IS_ALREADY_EXIST.name());
         }
 
         productEntity = businessMapper.convertToProductEntity(productDto);
@@ -44,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto updateProduct(Integer productId, ProductDto productDto) {
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException("Product with such id not found"));
+                .orElseThrow(() -> new ProductException(ResultEnum.PRODUCT_NOT_FOUND.name()));
 
 
         if (productDto.getName() != null) {

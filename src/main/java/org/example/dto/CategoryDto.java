@@ -12,5 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
     private String title;
+    private String image;
+    private String description;
 //    private List<ProductDto> productDto = new ArrayList<>();
 }

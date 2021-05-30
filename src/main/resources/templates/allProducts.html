@@ -7,9 +7,106 @@
     <main>
         <div class="container-fluid">
             <div class="row">
-                <div class="col d-flex justify-content-center">
+                <div class="col-lg-2">
+                    <div id="accordion" role="tablist" aria-multiselectable="false" class="m-2">
+                        <div class="card">
+                            <h5 class="card-header bg-l" role="tab" id="headingOne">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                   aria-expanded="true" aria-controls="collapseOne"
+                                   class="d-block text-dark d-flex d-flex justify-content-between">
+                                    Categories <i class="fa fa-chevron-down pull-right"></i>
+                                </a>
+                            </h5>
+
+                            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="card-body p-0">
+                                    <div class="list-group rounded-0">
+                                        <a type="button" class="list-group-item list-group-item-action active"
+                                           aria-current="true" th:href="@{/allProducts}">
+                                            All products
+                                        </a>
+                                        <a type="button" class="list-group-item list-group-item-action"
+                                           th:each="category :${categories}"
+                                           th:href="@{/allProducts/{category}(category=${category.title})}"
+                                           th:text="${category.title}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h5 class="card-header" role="tab" id="headingTwo">
+                                <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fa fa-chevron-down pull-right"></i> Collapsible Group Item #2
+                                </a>
+                            </h5>
+                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="card-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                    richardson ad squid. 3 wolf
+                                    moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                                    laborum eiusmod.
+                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee
+                                    nulla assumenda
+                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea
+                                    proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                                    farm-to-table, raw denim
+                                    aesthetic synth nesciunt you probably haven't heard of them accusamus labore
+                                    sustainable VHS.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h5 class="card-header" role="tab" id="headingThree">
+                                <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fa fa-chevron-down pull-right"></i> Collapsible Group Item #3
+                                </a>
+                            </h5>
+                            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="card-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                    richardson ad squid. 3 wolf
+                                    moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                                    laborum eiusmod.
+                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee
+                                    nulla assumenda
+                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea
+                                    proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                                    farm-to-table, raw denim
+                                    aesthetic synth nesciunt you probably haven't heard of them accusamus labore
+                                    sustainable VHS.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10 d-flex justify-content-center">
                     <div class="row px-3">
-                        <div class="card  m-2 p-0 shadow-sm" style="width: 14rem;" th:each="product: *{products}">
+                        <div th:if="${products == null}">
+                            <div id="emptyCartBlock">
+                                <div class="row justify-content-center mb-2">
+                                    <img style="width: 100px;"
+                                         src="https://www.mydaddyshop.com/assets/images/no-product.png"
+                                         id="emptyCartImg">
+                                </div>
+                                <div class="row justify-content-center">
+                                    <h4 class="text-center mb-2">No products were found matching your selection</h4>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <a href="/allProducts">
+                                        <a class="btn btn-success "
+                                           id="viewAllProd">All products
+                                        </a>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card  m-2 p-0 shadow-sm" style="width: 14rem;" th:if="${products != null}"
+                             th:each="product: *{products}">
 
                             <div>
                                 <img th:src="${product.image}" class="card-img-top img-thumbnail border-0" alt="..."
@@ -40,4 +137,8 @@
     </main>
 
 </div>
+
+<th:block layout:fragment="scripts">
+    <script th:inline="javascript"></script>
+</th:block>
 </html>

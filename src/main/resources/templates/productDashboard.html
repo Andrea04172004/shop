@@ -11,7 +11,6 @@
         </button>
     </div>
     <main>
-
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-lg-6">
@@ -74,29 +73,29 @@
                         </div>
                     </div>
 
-                        <div class="card collapse" id="addCat">
-                            <div class="card-header text-center  bg-success text-white">
-                                Create new category
-                            </div>
-                            <div class="card-body p-3">
-                                <div class="form-group col-md-12 mb-2 p-0">
-                                    <form method="post" th:action="@{/category/create}" id="createCategoryForm"
-                                          class="m-0" th:object="${category}">
-                                        <label for="newCat">Category</label>
-                                        <div class="input-group mb-3">
-                                            <input class="form-control" type="text" id="newCat"
-                                                   th:field="*{title}">
-                                            <div class="input-group-prepend">
-                                                <button class="btn-outline-success input-group-text"
-                                                        type="submit"
-                                                        id="createCat">Create
-                                                </button>
-                                            </div>
+                    <div class="card collapse" id="addCat">
+                        <div class="card-header text-center  bg-success text-white">
+                            Create new category
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="form-group col-md-12 mb-2 p-0">
+                                <form method="post" th:action="@{/category/create}" id="createCategoryForm"
+                                      class="m-0" th:object="${category}">
+                                    <label for="newCat">Category</label>
+                                    <div class="input-group mb-3">
+                                        <input class="form-control" type="text" id="newCat"
+                                               th:field="*{title}">
+                                        <div class="input-group-prepend">
+                                            <button class="btn-outline-success input-group-text"
+                                                    type="submit"
+                                                    id="createCat">Create
+                                            </button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
                 </div>
 
 
@@ -170,40 +169,43 @@
                             All products
                         </div>
                         <div class="card-body p-3">
-                            <div class="datatable">
-                                <table class="table table-hover table-responsive-xl table-bordered mb-0"
-                                       id="productDashboard">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="product, productStat:${products}">
-                                        <th scope="row" th:text="${productStat.count}"></th>
-                                        <td th:text="${product.name}"></td>
-                                        <td th:text="${product.categoryDto.title}"></td>
-                                        <td th:text="${product.price}"></td>
-                                        <td th:text="${product.quantity}"></td>
-                                        <td>
-                                            <a class="btn btn-outline-warning float-left mr-2"
-                                               th:href="@{/selectProduct/{productId}(productId=${product.id})}">
-                                                <i class="far fa-edit"></i>
-                                            </a>
-                                            <a class="btn btn-outline-danger float-left mr-2"
-                                               th:href="@{/deleteProduct/{productId}(productId=${product.id})}">
-                                                <i class="far fa-trash-alt"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <!--                            <div class="datatable" id="productTable">-->
+                            <!--                                <table class="table table-hover table-responsive-xl table-bordered mb-0"-->
+                            <!--                                       id="productDashboard">-->
+                            <!--                                    <thead>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="col">#</th>-->
+                            <!--                                        <th scope="col">Name</th>-->
+                            <!--                                        <th scope="col">Category</th>-->
+                            <!--                                        <th scope="col">Price</th>-->
+                            <!--                                        <th scope="col">Quantity</th>-->
+                            <!--                                        <th scope="col">Actions</th>-->
+                            <!--                                    </tr>-->
+                            <!--                                    </thead>-->
+                            <!--                                    <tbody>-->
+                            <!--                                    <tr th:each="product, productStat:${products}">-->
+                            <!--                                        <th scope="row" th:text="${productStat.count}"></th>-->
+                            <!--                                        <td th:text="${product.name}"></td>-->
+                            <!--                                        <td th:text="${product.categoryDto.title}"></td>-->
+                            <!--                                        <td th:text="${product.price}"></td>-->
+                            <!--                                        <td th:text="${product.quantity}"></td>-->
+                            <!--                                        <td>-->
+                            <!--                                            <a class="btn btn-outline-warning float-left mr-2"-->
+                            <!--                                               th:href="@{/selectProduct/{productId}(productId=${product.id})}">-->
+                            <!--                                                <i class="far fa-edit"></i>-->
+                            <!--                                            </a>-->
+                            <!--                                            <a class="btn btn-outline-danger float-left mr-2"-->
+                            <!--                                               th:onclick="'javascript:deleteProduct('+${product.id}+');'">-->
+                            <!--                                                <i class="far fa-trash-alt"></i>-->
+                            <!--                                            </a>-->
+                            <!--&lt;!&ndash;                                            th:href="@{/deleteProduct/{productId}(productId=${product.id})}"&ndash;&gt;-->
+                            <!--                                        </td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    </tbody>-->
+                            <!--                                </table>-->
+                            <!--                            </div>-->
+
+                            <div th:insert="productTable.html"></div>
                         </div>
                     </div>
                 </div>
@@ -219,12 +221,12 @@
                 .done(function (page) {
                     let table = $("#productDashboard").DataTable();
                     table.destroy();
+                    $("#productTable").replaceWith(page);
                     loadProductDashboardTable();
-                    $("#layout_content").replaceWith(page);
+                    loadTimeSuccessAlert("Product deleted", 3000);
                 })
             console.log(productId);
         }
-
 
         $('#productDashboard').DataTable({
             bAutoWidth: false,

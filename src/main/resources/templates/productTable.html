@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div class="datatable" id="productTable">
+    <table class="table table-hover table-responsive-xl table-bordered mb-0"
+           id="productDashboard">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product, productStat:${products}">
+            <th scope="row" th:text="${productStat.count}"></th>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.categoryDto.title}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td>
+                <a class="btn btn-outline-warning float-left mr-2"
+                   th:href="@{/selectProduct/{productId}(productId=${product.id})}">
+                    <i class="far fa-edit"></i>
+                </a>
+                <a class="btn btn-outline-danger float-left mr-2"
+                   th:onclick="'javascript:deleteProduct('+${product.id}+');'">
+                    <i class="far fa-trash-alt"></i>
+                </a>
+                <!--                                            th:href="@{/deleteProduct/{productId}(productId=${product.id})}"-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>

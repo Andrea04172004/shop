@@ -1,0 +1,132 @@
+<header xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        th:fragment="navigation"
+        class="page-header page-header-dark">
+
+    <!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+    <!--        <a class="navbar-brand" href="/">Online shop</a>-->
+    <!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+    <!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--            <span class="navbar-toggler-icon"></span>-->
+    <!--        </button>-->
+
+    <!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+    <!--            <ul class="navbar-nav mr-auto">-->
+    <!--                <li class="nav-item active">-->
+    <!--                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>-->
+    <!--                </li>-->
+    <!--                <li class="nav-item">-->
+    <!--                    <a class="nav-link" href="/allProducts">All products</a>-->
+    <!--                </li>-->
+    <!--                <li class="nav-item">-->
+    <!--                    <a class="nav-link" href="/dashboard">Dashboard</a>-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--                <div class="form-inline my-2 my-lg-0 text-white">-->
+    <!--    &lt;!&ndash;                <div class="form-inline" th:if="${cartPrice!=null}">&ndash;&gt;-->
+    <!--    &lt;!&ndash;                    <p class="m-0 mx-2">Cart price:</p>&ndash;&gt;-->
+    <!--    &lt;!&ndash;                    <h6 class="m-0" th:text="${cartPrice}+'₴'"></h6>&ndash;&gt;-->
+    <!--    &lt;!&ndash;                </div>&ndash;&gt;-->
+    <!--                    <a class="nav-link p-0" href="/shopCart">-->
+    <!--                        <button class="btn text-white p-1">-->
+    <!--                            <span class="badge badge-pill badge-primary m-4" th:if="${cartAmount!=0}" th:text="${cartAmount}"-->
+    <!--                                  style="position:absolute; z-index: 1"></span>-->
+    <!--                            <i class="mx-2 fas fa-shopping-cart fa-lg"></i>-->
+    <!--                        </button>-->
+    <!--                    </a>-->
+
+    <!--                <a class="nav-link p-0" href="/profile">-->
+    <!--                    <button class="btn text-white p-1">-->
+    <!--                        <i class="mx-3 fas fa-user fa-lg"></i>-->
+    <!--                    </button>-->
+    <!--                </a>-->
+    <!--                <a class="nav-link p-0" href="/logout">-->
+    <!--                    <button class="btn text-white p-1">-->
+    <!--                        <i class="mx-3 fas fa-sign-out-alt fa-lg"></i>-->
+    <!--                    </button>-->
+    <!--                </a>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </nav>-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Online shop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+
+            <a class="btn text-dark p-0" href="/shopCart" sec:authorize="isAuthenticated()">
+                <div class="d-flex align-items-center p-0">
+                    <div class="mx-2">
+                        <h3 class="m-0"><i class="fas fa-shopping-basket"></i></h3>
+                    </div>
+                    <div class="col px-1">
+                        <div class="text-dark h5 mb-0">Cart</div>
+                        <p class="text-dark m-0" th:if="${cartAmount!=0}" th:text="${cartPrice}+'₴'"></p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="d-flex align-items-center p-0" sec:authorize="isAnonymous()">
+                <div>
+                    <a class="text-white p-0" href="/login">
+                        <button class="btn btn-success">Sign in</button>
+                    </a>
+                    <a class="text-white p-0" href="/signUp">
+                        <button class="btn btn-primary">Sign up</button>
+                    </a>
+                </div>
+            </div>
+            <a class="btn text-dark p-0" href="/profile" sec:authorize="isAuthenticated()">
+                <div class="d-flex align-items-center p-0">
+                    <div class="mx-2">
+                        <h3 class="m-0"><i class="far fa-user-circle"></i></h3>
+                    </div>
+                    <div class="col px-1">
+                        <div class="text-dark h5 mb-0">Profile</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <ul class="nav nav-pills nav-justified bg-dark">
+        <li class="nav-item">
+            <a class="nav-link text-white" href="/allProducts">Product catalog</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#">Disabled</a>
+        </li>
+    </ul>
+
+</header>
