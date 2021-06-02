@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,6 +46,7 @@ public class ProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = userService.findUserByEmail(auth.getName());
 
+
         ShoppingCartDto shoppingCartDto = userDto.getShoppingCartDto();
         ModelAndView modelAndView = new ModelAndView("allProducts");
         modelAndView.addObject("products", productService.findAllProducts());
@@ -52,6 +54,7 @@ public class ProductController {
         modelAndView.addObject("cartPrice", shoppingCartService.getTotalCartPrice(shoppingCartDto.getId()));
         modelAndView.addObject("cartAmount", shoppingCartDto.getLineItemDto().size());
         modelAndView.addObject("categories", categoryService.findAllCategories());
+
         return modelAndView;
     }
 
@@ -137,6 +140,7 @@ public class ProductController {
         productService.updateProduct(Integer.parseInt(productId), productDto);
         return "redirect:/dashboard";
     }
+
 
 
 }
